@@ -4,6 +4,7 @@
 
 \LoadClass{article}
 
+% Layout settings
 \voffset = -72pt
 \hoffset = -0pt
 \oddsidemargin = 0pt
@@ -11,7 +12,7 @@
 \textheight = 720pt
 \marginparwidth = 0pt
 
-
+% For setting info used in the tilte
 \newcommand{\applicantName}[1]{\newcommand{\@applicantName}{#1}}
 \newcommand{\applicantBirth}[1]{\newcommand{\@applicantBirth}{#1}}
 \newcommand{\applicantAddress}[1]{\newcommand{\@applicantAddress}{#1}}
@@ -26,6 +27,7 @@
 	\applicantMobile{#5}
 }
 
+% Maketitle with name, birth, address, email and mobile information
 \renewcommand*{\maketitle}{
 	{\huge \textbf \@applicantName} \\
 
