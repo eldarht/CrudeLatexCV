@@ -4,11 +4,15 @@
 
 \RequirePackage{url} 				% Used for git url.
 \RequirePackage{geometry}			% Used for layout settings.
-
+\usepackage{titlesec}				% Used for section heddings
 
 % Layout settings
 \geometry{margin=0.5in}		
 \pagestyle{empty}					% Removing header/footer.
+
+% Section settings
+\titleformat{\section}
+{\Large\bfseries}{\thesection}{1em}{}[{\titlerule[1pt]}]
 
 % For setting info used in the tilte
 \newcommand{\applicantName}[1]{\newcommand{\@applicantName}{#1}}
@@ -41,5 +45,5 @@
 
 		\textbf{Mobile:}\url{\@applicantGit} & \\
 	\end{tabular*}
-	\rule{\textwidth}{1pt}
+	\rule{\textwidth}{2pt}
 }
