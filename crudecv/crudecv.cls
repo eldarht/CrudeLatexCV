@@ -1,16 +1,14 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{crudecv/crudecv}
-\RequirePackage{multicol}
+\LoadClass[a4paper, 11pt]{report}
 
-\LoadClass{article}
+\RequirePackage{url} 				% Used for git url.
+\RequirePackage{geometry}			% Used for layout settings.
+
 
 % Layout settings
-\voffset = -72pt
-\hoffset = -0pt
-\oddsidemargin = 0pt
-\textwidth = 455pt
-\textheight = 720pt
-\marginparwidth = 0pt
+\geometry{margin=0.5in}		
+\pagestyle{empty}					% Removing header/footer.
 
 % For setting info used in the tilte
 \newcommand{\applicantName}[1]{\newcommand{\@applicantName}{#1}}
@@ -18,27 +16,30 @@
 \newcommand{\applicantAddress}[1]{\newcommand{\@applicantAddress}{#1}}
 \newcommand{\applicantEmail}[1]{\newcommand{\@applicantEmail}{#1}}
 \newcommand{\applicantMobile}[1]{\newcommand{\@applicantMobile}{#1}}
+\newcommand{\applicantGit}[1]{\newcommand{\@applicantGit}{#1}}
 
-\newcommand{\applicant}[5][\@author]{
+\newcommand{\applicant}[6][\@author]{
 	\applicantName{#1}
 	\applicantBirth{#2}
 	\applicantAddress{#3}
 	\applicantEmail{#4}
 	\applicantMobile{#5}
+	\applicantGit{#6}
+
 }
 
-% Maketitle with name, birth, address, email and mobile information
-\renewcommand*{\maketitle}{
-	{\huge \textbf \@applicantName} \\
+% Maketitle with name, birth, address, email, mobile and git information
+\renewcommand{\maketitle}{
+	\noindent
+	{\huge \textbf{\@applicantName}} \\	
 
-	\begin{multicols}{2}{
-			\textbf{Birth:} \@applicantBirth \\
-			\textbf{Address:} \@applicantAddress
-		}{
-			\textbf{Email:} \@applicantEmail \\
-			\textbf{Mobile:} \@applicantMobile
-		}
-	\end{multicols}
-	\hline
+	\noindent
+	\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+		\textbf{Birth:} \@applicantBirth & \textbf{Address:} \@applicantAddress \\
+
+		\textbf{Email:} \@applicantEmail & \textbf{Mobile:} \@applicantMobile \\
+
+		\textbf{Mobile:}\url{\@applicantGit} & \\
+	\end{tabular*}
+	\rule{\textwidth}{1pt}
 }
-
