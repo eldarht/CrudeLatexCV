@@ -99,6 +99,64 @@
 	% Connect timeline from end to start of current experience
 	\path [line] (expdate\arabic{experienceCount}end.south) -- (expdate\arabic{experienceCount}start.north);
 
-	% Note this experience as for next iteration.
+	% Note this experience for next iteration.
 	\stepcounter{experienceLastCount}
+}
+
+
+% Skill level environment with counter
+\newcounter{skillCount} \newcounter{skillLastLeftCount} 
+\newenvironment{skills}{
+	%Reset counters for each new instance of the environment.
+ 	\setcounter{skillCount}{0} \setcounter{skillLastLeftCount}{0}
+	\tikzset{
+		level/.style={circle, draw, text width={0.1cm}},	% Used to mark level of proficiency.
+		levelEarned/.style={level, fill=black!50},			% Used to mark acquiered proficiency.
+		levelUnearned/.style={level, fill=white},			% Used to mark lack of proficiency.
+		line/.style={draw},							%Used to connect levels and creating borders.
+		skill/.style={rectangle, minimum width={(\textwidth/2)},	
+			text width={\textwidth/2}, inner sep=0cm,
+			minimum height={1cm}} 					%Used to mark one skill row.
+	}
+	\begin{tikzpicture}[]
+}{
+	\end{tikzpicture}
+}
+
+% Takes a skill name and level
+\newcommand{\skill}[2]{
+	\stepcounter{skillCount} % Nr of current skill to create
+	
+	\ifodd \value{skillCount} { % If odd place left
+		\ifnum \value{skillCount}<2 { % If first left place absolute.
+			\node at (0,0) [skill] (skillname\arabic{skillCount}) {#1};
+			\stepcounter{skillLastLeftCount}	% Mark current as last left.
+		}\else {	% If other exist then place relative.
+			\node [skill,  below=0cm of skillname\arabic{skillLastLeftCount})] 
+				(skillname\arabic{skillCount}) {#1};
+			\addtocounter{skillLastLeftCount}{2} % Note this skill for next two iteration.
+		}\fi 
+		\path[line] (skillname\arabic{skillCount}.north east) -- (skillname\arabic{skillCount}.south east); % Create border between left and right column.
+	}\else {	% If even place right
+		\node [skill, right=3mm of skillname\arabic{skillLastLeftCount})]
+			(skillname\arabic{skillCount}) {#1}; %Place right of last left column skill.
+	}\fi
+
+
+	\foreach \level in {0,1,...,4} % Create proficiency scale
+	{
+		\ifnum #2 > \level { % If proficiency is higher than created level.
+			\node[levelEarned, left= 5cm - \level cm of skillname\arabic{skillCount}.east] 
+				(level\arabic{skillCount}and\level){};
+		} \else {	% If proficiency is lower than created level.
+			\node[levelUnearned, left= 5cm - \level cm of skillname\arabic{skillCount}.east] 
+				(level\arabic{skillCount}and\level){};
+		}\fi
+	}
+
+	\foreach \from [count=\to from 1] in {0,1,...,3} % Connect levels as scale.
+	{
+		\path[line] (level\arabic{skillCount}and\from) -- (level\arabic{skillCount}and\to);
+	}
+	
 }
