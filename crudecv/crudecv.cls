@@ -7,7 +7,7 @@
 \RequirePackage{titlesec}			% Used for section heddings
 \RequirePackage[iso,english]{isodate}			% Used for birth date
 \RequirePackage{tikz}				% Used for experience env.
-\usetikzlibrary{positioning}
+\usetikzlibrary{positioning, shapes}
 % Layout settings
 \geometry{margin=0.5in}		
 \pagestyle{empty}					% Removing header/footer.
@@ -44,7 +44,7 @@
 
 	\noindent
 	\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
-		\textbf{Birth:} \printdate{\@applicantBirth} & \textbf{Address:} \@applicantAddress \\
+		\textbf{d.o.b:} \printdate{\@applicantBirth} & \textbf{Address:} \@applicantAddress \\
 
 		\textbf{Email:} \@applicantEmail & \textbf{Mobile:} \@applicantMobile \\
 
@@ -60,9 +60,13 @@
  	\setcounter{experienceCount}{0} \setcounter{experienceLastCount}{0}
 	\tikzset{
 		lane/.style={rectangle},	%Used for seperating date and description.
-		date/.style={circle, draw, text width={0.1cm}},	% Used to mark date on timeline.
+		datePointer/.style={regular polygon, regular polygon sides=3,
+			shape border rotate=90, draw, fill=black, anchor= south east,
+			inner sep= 0mm, minimum width={0.3cm}},	% Used to mark date on timeline.
+		dateDelimiter/.style={circle, draw, fill=black, 
+			inner sep= 0mm, minimum width={1mm}},% Used to mark date on timeline.
 		line/.style={draw},		%Used to make timeline.
-		experience/.style={rectangle, text width ={(\textwidth/5)*3}} %Used as textbox for description.
+		experience/.style={rectangle, inner sep= 2mm, text width ={(\textwidth/8)*5}} %Used as textbox for description.
 	}
 	\begin{tikzpicture}[]
 	
@@ -80,24 +84,26 @@
 	
 	\ifnum \value{experienceCount}<2 { % If first experience
 		% Create experience in correct lane. Name it based on its nr. Fill textbox with description.
-		\node [experience, below=0mm of center] (expname\arabic{experienceCount}) {\textbf{#1:} #2};
+		\node [experience, below=0mm of center] 
+			(expname\arabic{experienceCount}) {\textbf{#1:} \\ #2};
 	} \else { % If an experience already exists.
 		% Create experience under last experience. Name it based on its nr. Fill textbox with description.
-		\node [experience, below=1cm of expname\arabic{experienceLastCount}] (expname\arabic{experienceCount}) {\textbf{#1:} #2};
+		\node [experience, below=1cm of expname\arabic{experienceLastCount}] 
+			(expname\arabic{experienceCount}) {\textbf{#1:} \\ #2};
 	}\fi
 	
 	% Create start and end date. Name it based on its nr.
-	\node [date, left=of expname\arabic{experienceCount}.north west, pin=left:#4, ] 
+	\node at (expname\arabic{experienceCount}.north west) [datePointer, pin=left:{(#4 - #3)}] 
 		(expdate\arabic{experienceCount}end){};
-	\node [date, left=of expname\arabic{experienceCount}.south west, pin=left:#3, ] 
+	\node at (expname\arabic{experienceCount}.south west) [dateDelimiter] 
 		(expdate\arabic{experienceCount}start){};
 
 	\ifnum \value{experienceCount}> 1  % If experience exists already.
 		% Connect timeline to last experience.
-		\path [line] (expdate\arabic{experienceLastCount}start.south) -- (expdate\arabic{experienceCount}end.north);
+		\path [line, dashed] (expdate\arabic{experienceLastCount}start.south) -- (expdate\arabic{experienceCount}end.east);
 	\fi
 	% Connect timeline from end to start of current experience
-	\path [line] (expdate\arabic{experienceCount}end.south) -- (expdate\arabic{experienceCount}start.north);
+	\path [line] (expdate\arabic{experienceCount}end.east) -- (expdate\arabic{experienceCount}start.north);
 
 	% Note this experience for next iteration.
 	\stepcounter{experienceLastCount}
