@@ -36,23 +36,42 @@
 	\applicantGit{#6}
 
 }
-
+\DeclareOption{british}{
 % Maketitle with name, birth, address, email, mobile and git information
-\renewcommand{\maketitle}{
-	\noindent
-	{\huge \textbf{\@applicantName}} \\	
+	\renewcommand{\maketitle}{
+		\noindent
+		{\huge \textbf{\@applicantName}} \\	
 
-	\noindent
-	\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
-		\textbf{d.o.b:} \printdate{\@applicantBirth} & \textbf{Address:} \@applicantAddress \\
+		\noindent
+		\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+			\textbf{d.o.b:} \printdate{\@applicantBirth} & \textbf{Address:} \@applicantAddress \\
 
-		\textbf{Email:} \@applicantEmail & \textbf{Mobile:} \@applicantMobile \\
+			\textbf{Email:} \@applicantEmail & \textbf{Mobile:} \@applicantMobile \\
 
-		\textbf{Git:}\url{\@applicantGit} & \\
-	\end{tabular*}
-	\rule{\textwidth}{2pt}
+			\textbf{Git:}\url{\@applicantGit} & \\
+		\end{tabular*}
+		\rule{\textwidth}{2pt}
+	}
 }
 
+\DeclareOption{norsk}{
+% Maketitle with name, birth, address, email, mobile and git information
+	\renewcommand{\maketitle}{
+		\noindent
+		{\huge \textbf{\@applicantName}} \\	
+
+		\noindent
+		\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+			\textbf{DOB:} \printdate{\@applicantBirth} & \textbf{Adresse:} \@applicantAddress \\
+
+			\textbf{Epost:} \@applicantEmail & \textbf{Mobil:} \@applicantMobile \\
+
+			\textbf{Git:}\url{\@applicantGit} & \\
+		\end{tabular*}
+		\rule{\textwidth}{2pt}
+	}
+}
+\ProcessOptions
 % Experience environment with counter
 \newcounter{experienceCount} \newcounter{experienceLastCount} 
 \newenvironment{experiences}{
