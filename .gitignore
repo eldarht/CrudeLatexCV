@@ -2,7 +2,9 @@
 *.fdb_latexmk
 *.fls
 *.log
-*.pdf
+*.out
 *.synctex.gz
+*.dvi
+*.html
 README.html
 build/*
